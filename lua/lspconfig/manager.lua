@@ -127,7 +127,7 @@ function M:_start_client(bufnr, new_config, root_dir, single_file, silent)
     new_config.workspace_folders = nil
   end
 
-  print("cmdcfg: " .. new_config.cmd)
+  vim.notify("cmdcfg: " .. new_config.cmd)
   local client_id = lsp.start(new_config, {
     bufnr = bufnr,
     silent = silent,
