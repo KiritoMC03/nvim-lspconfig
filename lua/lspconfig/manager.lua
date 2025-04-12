@@ -78,7 +78,18 @@ function M:_notify_workspace_folder_added(root_dir, client)
   end
   client.workspace_folders[#client.workspace_folders + 1] = params.event.added[1]
 end
-
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
 --- @private
 --- @param bufnr integer
 --- @param new_config lspconfig.Config
@@ -127,7 +138,7 @@ function M:_start_client(bufnr, new_config, root_dir, single_file, silent)
     new_config.workspace_folders = nil
   end
 
-  vim.notify("cmdcfg: " .. new_config.cmd)
+  vim.notify("cmdcfg: " .. dump(new_config.cmd))
   local client_id = lsp.start(new_config, {
     bufnr = bufnr,
     silent = silent,
